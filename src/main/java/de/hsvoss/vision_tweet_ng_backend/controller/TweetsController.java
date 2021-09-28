@@ -37,16 +37,15 @@ public class TweetsController {
     }
 
     @GetMapping(path = "tweets")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "all tweets"),
+            @ApiResponse(responseCode = "404", description = "no tweets")
+    })
     List<TweetResponseDTO> getAllTweets() {
 
         List<Tweet> allTweets = tweetService.getAllTweets();
-
-//        Tweet tweet;
-//
         List<TweetResponseDTO> convert = conversionService.convert(allTweets, List.class);
 
-//        TweetResponseDTO tweetResponseDTO = new TweetResponseDTO();
-//        tweetResponseDTO.setMessage("Hallo Welt 2");
         return convert;
     }
 
@@ -67,15 +66,23 @@ public class TweetsController {
 
 
     @PostMapping(path = "tweets")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "tweet created"),
+            @ApiResponse(responseCode = "400", description = "can not create tweet")
+    })
     TweetResponseDTO createTweet(@RequestBody TweetRequestDTO request) {
-        Tweet mappedRequest = conversionService.convert(request, Tweet.class);
 
-        Tweet erstellteTweet = tweetService.addTweet(mappedRequest);
-        return conversionService.convert(erstellteTweet, TweetResponseDTO.class);
+        Tweet mappedRequest = conversionService.convert(request, Tweet.class);
+        Tweet erstellterTweet = tweetService.addTweet(mappedRequest);
+        return conversionService.convert(erstellterTweet, TweetResponseDTO.class);
 
     }
 
     @DeleteMapping(path = "tweets/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "tweet deleted"),
+            @ApiResponse(responseCode = "404", description = "no tweet for the id")
+    })
     void deleteOneTweet(@PathParam("id") UUID id) {
         tweetService.deleteTweet(id);
     }
