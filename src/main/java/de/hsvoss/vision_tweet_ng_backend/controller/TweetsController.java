@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TweetsController {
+//    https://vision-tweet-ng-backend.herokuapp.com/
+
     @GetMapping(path = "/sayhello")
     String sayHello() {
         return "Hallo Welt!!!";
